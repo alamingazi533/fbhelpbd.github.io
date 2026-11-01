@@ -4177,20 +4177,53 @@ function insertPostImage(id){
     // ১. ব্যাকগ্রাউন্ড: গাঢ় গ্রেডিয়েন্ট + আলো + ঝাপসা বৃত্ত (bokeh)
     const g = x.createLinearGradient(0, 0, W, H); g.addColorStop(0, col[0]); g.addColorStop(1, col[1]); x.fillStyle = g; x.fillRect(0, 0, W, H);
     const lg = x.createRadialGradient(930, 250, 20, 930, 300, 560); lg.addColorStop(0, 'rgba(255,255,255,.24)'); lg.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = lg; x.fillRect(0, 0, W, H);
-    for(let i = 0; i < 9; i++){ const bx = 520 + rnd() * 680, by = 40 + rnd() * 520, br = 22 + rnd() * 64; x.fillStyle = 'rgba(255,255,255,' + (0.04 + rnd() * 0.07).toFixed(3) + ')'; x.beginPath(); x.arc(bx, by, br, 0, 7); x.fill(); }
+    const sw = x.createLinearGradient(0, 0, W, H * 0.6); sw.addColorStop(0, 'rgba(255,255,255,0)'); sw.addColorStop(.45, 'rgba(255,255,255,.07)'); sw.addColorStop(.6, 'rgba(255,255,255,0)'); x.fillStyle = sw; x.fillRect(0, 0, W, H);
+    for(let i = 0; i < 12; i++){ const bx = 480 + rnd() * 720, by = 20 + rnd() * 540, br = 20 + rnd() * 70, ba = 0.05 + rnd() * 0.09; const bg2 = x.createRadialGradient(bx, by, br * 0.55, bx, by, br); bg2.addColorStop(0, 'rgba(255,255,255,' + (ba * 0.6).toFixed(3) + ')'); bg2.addColorStop(.88, 'rgba(255,255,255,' + ba.toFixed(3) + ')'); bg2.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = bg2; x.beginPath(); x.arc(bx, by, br, 0, 7); x.fill(); }
     // ২. ফোন (ডানে, সামান্য হেলানো, নিচ থেকে উঠে আসা)
     const quote = (title.match(/["“]([^"”]{4,70})["”]/g) || []).map(s => s.slice(1, -1)).find(s => /[A-Za-z]{3}/.test(s));
-    x.save(); x.translate(985, 395); x.rotate(-0.07);
+    x.save(); x.translate(955, 335); x.scale(1.45, 1.45);
+    const PH = false;
+    if(PH){
     x.save(); x.shadowColor = 'rgba(0,0,0,.5)'; x.shadowBlur = 44; x.shadowOffsetX = 16; x.shadowOffsetY = 26; x.fillStyle = '#0d0f13'; rr(-150, -250, 300, 600, 40); x.fill(); x.restore();
     const fg = x.createLinearGradient(-150, -250, 150, 350); fg.addColorStop(0, '#3a3f49'); fg.addColorStop(.5, '#14161b'); fg.addColorStop(1, '#2b2f37'); x.fillStyle = fg; rr(-150, -250, 300, 600, 40); x.fill();
+    { const rg = x.createLinearGradient(-150, -250, 150, 350); rg.addColorStop(0, 'rgba(255,255,255,.75)'); rg.addColorStop(.25, 'rgba(255,255,255,.12)'); rg.addColorStop(.7, 'rgba(255,255,255,.06)'); rg.addColorStop(1, 'rgba(255,255,255,.45)'); x.strokeStyle = rg; x.lineWidth = 2.2; rr(-149, -249, 298, 598, 39); x.stroke(); x.fillStyle = '#23262d'; rr(150, -120, 5, 70, 2); x.fill(); rr(-155, -150, 5, 36, 2); x.fill(); rr(-155, -100, 5, 56, 2); x.fill(); }
     x.fillStyle = '#f3f5f8'; rr(-138, -238, 276, 576, 30); x.fill();
     // স্ক্রিনের ওপরের বার
     x.save(); rr(-138, -238, 276, 576, 30); x.clip();
     x.fillStyle = col[0]; x.fillRect(-138, -238, 276, 74);
     x.fillStyle = 'rgba(255,255,255,.9)'; rr(-118, -208, 54, 8, 4); x.fill(); rr(-118, -190, 90, 6, 3); x.fill();
     x.fillStyle = 'rgba(255,255,255,.35)'; x.beginPath(); x.arc(112, -196, 14, 0, 7); x.fill();
+    }
     // কার্ড
     x.save(); x.shadowColor = 'rgba(0,0,0,.18)'; x.shadowBlur = 14; x.shadowOffsetY = 5; x.fillStyle = '#fff'; rr(-120, -140, 240, quote ? 250 : 210, 18); x.fill(); x.restore();
+    const scene = quote ? '' : (/whatsapp|messenger|মেসেজ|চ্যাট|inbox|message/i.test(title) ? 'chat' : /youtube|reel|রিল|ভিডিও|video|live|লাইভ|tiktok|টিকটক|শর্টস|shorts/i.test(title) ? 'video' : /payout|পেআউট|monetiz|মনিটাইজ|আয়|টাকা|earn|income|আয়কর|টিআইএন/i.test(title) ? 'money' : /হ্যাক|পাসওয়ার্ড|password|2fa|two-factor|লগইন|login|recover|রিকভার|কোড|code|নিরাপত্তা/i.test(title) ? 'lock' : '');
+    let cy = 0;
+    if(scene){
+      if(scene === 'chat'){
+        x.fillStyle = '#e8ecf1'; rr(-108, -126, 150, 34, 14); x.fill(); x.fillStyle = '#c3cad4'; rr(-96, -113, 90, 8, 4); x.fill();
+        x.fillStyle = col[0]; rr(-42, -82, 150, 34, 14); x.fill(); x.fillStyle = 'rgba(255,255,255,.85)'; rr(-30, -69, 96, 8, 4); x.fill();
+        x.fillStyle = '#e8ecf1'; rr(-108, -38, 118, 34, 14); x.fill(); x.fillStyle = '#c3cad4'; rr(-96, -25, 70, 8, 4); x.fill();
+        x.fillStyle = '#e8ecf1'; rr(-108, 8, 62, 30, 14); x.fill(); x.fillStyle = '#9aa3b0'; [-90, -77, -64].forEach(px => { x.beginPath(); x.arc(px, 23, 4, 0, 7); x.fill(); });
+        cy = 60;
+      } else if(scene === 'video'){
+        const vg2 = x.createLinearGradient(-108, -128, 108, 0); vg2.addColorStop(0, '#2b3342'); vg2.addColorStop(1, '#10141c'); x.fillStyle = vg2; rr(-108, -128, 216, 124, 12); x.fill();
+        x.fillStyle = 'rgba(255,255,255,.92)'; x.beginPath(); x.arc(0, -66, 26, 0, 7); x.fill();
+        x.fillStyle = col[0]; x.beginPath(); x.moveTo(-8, -80); x.lineTo(-8, -52); x.lineTo(16, -66); x.closePath(); x.fill();
+        x.fillStyle = 'rgba(255,255,255,.35)'; rr(-96, -20, 192, 5, 2.5); x.fill(); x.fillStyle = col[0]; rr(-96, -20, 84, 5, 2.5); x.fill();
+        cy = 10;
+      } else if(scene === 'money'){
+        x.fillStyle = '#2FA36B'; x.beginPath(); x.arc(0, -96, 24, 0, 7); x.fill(); x.fillStyle = '#fff'; x.font = '800 28px Arial,sans-serif'; x.textBaseline = 'middle'; x.textAlign = 'center'; x.fillText('$', 0, -95);
+        x.strokeStyle = '#2FA36B'; x.lineWidth = 4; x.lineCap = 'round'; x.lineJoin = 'round'; x.beginPath(); x.moveTo(-96, 10); x.lineTo(-62, -14); x.lineTo(-34, -2); x.lineTo(0, -34); x.lineTo(34, -20); x.lineTo(70, -52); x.lineTo(96, -44); x.stroke();
+        x.fillStyle = '#e3e7ed'; [-96, -48, 0, 48, 96].forEach(px => { x.fillRect(px - 1, 16, 2, 6); });
+        x.textBaseline = 'top'; cy = 30;
+      } else {
+        x.fillStyle = col[0]; rr(-30, -92, 60, 50, 10); x.fill();
+        x.strokeStyle = col[0]; x.lineWidth = 8; x.beginPath(); x.arc(0, -92, 17, Math.PI, 0); x.stroke();
+        x.fillStyle = '#fff'; x.beginPath(); x.arc(0, -70, 6, 0, 7); x.fill(); x.fillRect(-2.5, -70, 5, 14);
+        x.fillStyle = '#c3cad4'; [-60, -36, -12, 12, 36, 60].forEach(px => { x.beginPath(); x.arc(px, -4, 6, 0, 7); x.fill(); });
+        cy = 22;
+      }
+    } else {
     const iy = -112; // আইকন
     if(/প্রতারণা|ভুয়া|স্ক্যাম|scam|phishing|সাবধান|suspended|disabled|restricted|blocked|banned|locked|limited|removed|violat/i.test(title)){
       x.fillStyle = '#E5484D'; x.beginPath(); x.moveTo(0, iy); x.lineTo(24, iy + 42); x.lineTo(-24, iy + 42); x.closePath(); x.fill();
@@ -4200,7 +4233,7 @@ function insertPostImage(id){
       x.strokeStyle = '#fff'; x.lineWidth = 5; x.lineCap = 'round'; x.lineJoin = 'round'; x.beginPath(); x.moveTo(-10, iy + 21); x.lineTo(-3, iy + 28); x.lineTo(11, iy + 12); x.stroke();
     }
     x.textBaseline = 'top'; x.textAlign = 'center'; x.fillStyle = '#1a1d23';
-    let cy = iy + 62;
+    cy = iy + 62;
     if(quote){
       let fs = 21; let ql;
       for(; fs >= 15; fs -= 1){ x.font = '700 ' + fs + 'px Arial,Helvetica,sans-serif'; ql = wrap(x, quote, 206); if(ql.length <= 5) break; }
@@ -4209,17 +4242,16 @@ function insertPostImage(id){
     } else {
       x.fillStyle = '#d5dae1'; [150, 190, 120].forEach((w, i) => { rr(-w / 2, cy + i * 18, w, 9, 4.5); x.fill(); }); cy += 66;
     }
+    }
     x.fillStyle = '#e9edf2'; [180, 140].forEach((w, i) => { rr(-w / 2, cy + i * 14, w, 7, 3.5); x.fill(); });
     // বাটন
-    x.fillStyle = col[0]; rr(-96, 66, 192, 30, 15); x.fill();
-    x.fillStyle = 'rgba(255,255,255,.9)'; rr(-30, 78, 60, 7, 3.5); x.fill();
-    // নিচে ধূসর লাইন (অন্য কনটেন্টের আভাস)
-    x.fillStyle = '#fff'; rr(-120, 130, 240, 62, 14); x.fill(); x.fillStyle = '#e3e7ed'; rr(-104, 146, 150, 8, 4); x.fill(); rr(-104, 164, 100, 8, 4); x.fill();
-    x.fillStyle = '#fff'; rr(-120, 204, 240, 62, 14); x.fill(); x.fillStyle = '#e3e7ed'; rr(-104, 220, 170, 8, 4); x.fill(); rr(-104, 238, 120, 8, 4); x.fill();
     x.restore();
-    // স্ক্রিনের ওপর আলোর রেখা (কাচের ঝলক)
-    const gl = x.createLinearGradient(-138, -238, 138, 120); gl.addColorStop(0, 'rgba(255,255,255,.18)'); gl.addColorStop(.35, 'rgba(255,255,255,0)'); x.fillStyle = gl; rr(-138, -238, 276, 576, 30); x.fill();
-    x.fillStyle = '#05060a'; rr(-30, -228, 60, 14, 7); x.fill(); // ক্যামেরা ক্যাপসুল
+    // ভাসমান নোটিফিকেশন কার্ড (গভীরতার অনুভূতি)
+    x.save(); x.translate(770, 430); x.rotate(-0.04);
+    x.shadowColor = 'rgba(0,0,0,.42)'; x.shadowBlur = 34; x.shadowOffsetY = 18; x.fillStyle = 'rgba(255,255,255,.96)'; rr(0, 0, 262, 82, 20); x.fill();
+    x.shadowColor = 'transparent'; x.fillStyle = col[0]; x.beginPath(); x.arc(41, 41, 24, 0, 7); x.fill();
+    x.strokeStyle = '#fff'; x.lineWidth = 5; x.lineCap = 'round'; x.lineJoin = 'round'; x.beginPath(); x.moveTo(31, 42); x.lineTo(38, 49); x.lineTo(52, 33); x.stroke();
+    x.fillStyle = '#2b3140'; rr(80, 22, 120, 11, 5.5); x.fill(); x.fillStyle = '#c3cad4'; rr(80, 44, 150, 9, 4.5); x.fill(); rr(80, 59, 96, 9, 4.5); x.fill();
     x.restore();
     // ৩. প্ল্যাটফর্ম ব্যাজ
     const bx = 80, by = 58, bs = 84;
@@ -4546,6 +4578,45 @@ function insertPostImage(id){
       render(p);
     };
   };
+  window.__covAll = async function(){
+    const p = panel();
+    p.innerHTML = '<b>🎨 সব পোস্টের কভার নতুন করুন</b><div style="font-size:12.5px;color:var(--muted);margin:6px 0;">⏳ পোস্টের তালিকা আনা হচ্ছে…</div>';
+    const list = await getPosts();
+    if(!list.length){ p.innerHTML = '<b>🎨 কভার</b><div style="color:var(--maroon);margin-top:6px;">❌ তালিকা আনা যায়নি। লগইন আছে কিনা দেখুন।</div><button type="button" id="cvX" style="' + btn + 'margin-top:8px;">✖</button>'; $('cvX').onclick = () => p.remove(); return; }
+    const noImg = list.filter(x => !x.imageUrl).length;
+    p.innerHTML = '<b>🎨 সব পোস্টের কভার নতুন করুন</b> <span style="font-size:12px;color:var(--muted);">(মোট ' + bn(list.length) + 'টা পোস্ট, ছবি নেই ' + bn(noImg) + 'টায়)</span>' +
+      '<div style="margin-top:10px;display:grid;gap:8px;font-size:13px;"><label>কোন পোস্টে? <select id="cvMode" style="padding:7px;border-radius:8px;border:1.5px solid var(--line);background:transparent;color:var(--ink);font-family:inherit;width:100%;margin-top:4px;"><option value="no">শুধু যেগুলোতে ছবি নেই (নিরাপদ)</option><option value="all">সব পোস্টে — আগের ছবি বদলে যাবে</option></select></label>' +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap;"><button type="button" id="cvGo" style="' + btn + 'background:var(--forest);color:#fff;border-color:var(--forest);">▶ শুরু করুন</button><button type="button" id="cvX" style="' + btn + '">✖ বন্ধ করুন</button></div>' +
+      '<div id="cvProg" style="font-weight:600;"></div><div style="height:8px;border-radius:6px;background:var(--line);overflow:hidden;"><div id="cvBar" style="height:100%;width:0;background:var(--forest);transition:width .3s;"></div></div><div id="cvLog" style="font-size:12.5px;line-height:1.7;"></div></div>';
+    $('cvX').onclick = () => { window.__cvStop = true; p.remove(); };
+    $('cvGo').onclick = async () => {
+      const all = $('cvMode').value === 'all';
+      const sel = list.filter(x => all || !x.imageUrl);
+      if(!sel.length){ alert('কোনো পোস্ট বাকি নেই।'); return; }
+      if(!confirm(bn(sel.length) + 'টা পোস্টে নতুন কভার বসবে' + (all ? ' (আগের ছবি বদলে যাবে)' : '') + '। পেজ খোলা রাখুন, বন্ধ করবেন না। এগোবেন?')) return;
+      window.__cvStop = false; $('cvGo').disabled = true;
+      let ok = 0, bad = 0, n = 0;
+      for(const it of sel){
+        if(window.__cvStop || !$('cvProg')) break;
+        try{
+          const du = await dataUrl(it.title);
+          let r = du ? await post({action:'updatePostImage', password: pwd(), row: it.rowIndex, imageBase64: du, imageName: 'cover-' + Date.now() + '.jpg', imageType: 'image/jpeg', allowDupImage: true}) : null;
+          if(r && r.success) ok++; else { bad++; const l = $('cvLog'); if(l){ const d = document.createElement('div'); d.style.color = 'var(--maroon)'; d.textContent = '❌ ' + String(it.title).slice(0, 40) + ' — ' + ((r && r.error) || 'হয়নি'); l.appendChild(d); } }
+        }catch(e){ bad++; }
+        n++;
+        const e1 = $('cvProg'); if(e1) e1.textContent = '⏳ ' + bn(n) + ' / ' + bn(sel.length) + ' · ✅ ' + bn(ok) + (bad ? ' · ❌ ' + bn(bad) : '');
+        const b = $('cvBar'); if(b) b.style.width = Math.round(n / sel.length * 100) + '%';
+      }
+      const e2 = $('cvProg'); if(e2) e2.textContent = (bad ? '⚠️' : '✅') + ' শেষ: ' + bn(ok) + 'টা কভার বসেছে' + (bad ? ' · ❌ ' + bn(bad) + 'টা ব্যর্থ' : '') + '। সাইটে আসতে ১–২ মিনিট লাগতে পারে।';
+      const g = $('cvGo'); if(g) g.disabled = false;
+      try{ loadAdminPosts(); }catch(e){}
+    };
+  };
+  function ensureCov(){
+    const bt = $('bulkTools'); if(!bt || $('xtCov')) return;
+    const b = document.createElement('button'); b.type = 'button'; b.id = 'xtCov'; b.style.cssText = btn; b.textContent = '🎨 সব কভার নতুন করুন'; b.onclick = () => window.__covAll(); bt.appendChild(b);
+  }
+  setInterval(ensureCov, 1500);
   function ensure(){
     const bt = $('bulkTools'); if(!bt || $('xtImp')) return;
     const b = document.createElement('button'); b.type = 'button'; b.id = 'xtImp'; b.style.cssText = btn; b.textContent = '📥 একসাথে পোস্ট ইমপোর্ট'; b.onclick = () => window.__impRun(); bt.appendChild(b);
